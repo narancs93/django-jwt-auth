@@ -5,3 +5,8 @@ services:
       - "5432:5432"
     env_file:
       - .env
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  postgresql_data:
