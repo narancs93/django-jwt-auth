@@ -8,4 +8,9 @@ urlpatterns = [
         users_views.CustomTokenObtainPairView.as_view(),
         name="token_obtain_pair",
     ),
+    path(
+        "token/refresh/",
+        users_views.CustomTokenRefreshView.as_view(),
+        name="token_refresh",
+    ),
 ]
