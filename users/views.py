@@ -1,16 +1,18 @@
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
-from .serializers import MyTokenObtainPairSerializer
 import random
 import string
 
+from django.contrib.auth import get_user_model
+from rest_framework import status
 from rest_framework.generics import CreateAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .helpers import send_verify_signup_email
-from .serializers import UserSerializer
+from .serializers import MyTokenObtainPairSerializer, UserSerializer
+
+User = get_user_model()
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -65,3 +67,47 @@ class CreateUserView(CreateAPIView):
             )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VerifyEmailView(APIView):
+
+    def get(self, request):
+        user_id = request.GET.get("uid")
+        one_time_password = request.GET.get("otp")
+
+        if not user_id or not one_time_password:
+            return Response("Invalid request", status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+
+            user = User.objects.get(id=user_id)
+
+            if user.one_time_password == one_time_password:
+                user.one_time_password = ""
+                user.is_active = True
+                user.save()
+
+                return Response(
+                    {
+                        "detail": "The email of the user was verified successfully",
+                    },
+                    status=status.HTTP_200_OK,
+                )
+
+        except User.DoesNotExist:
+            return Response(
+                {
+                    "error": "Object not found",
+                    "detail": "The requested object does not exist.",
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        except Exception:
+            return Response(
+                {
+                    "error": "Unknown Error",
+                    "detail": "Something went wrong:",
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
