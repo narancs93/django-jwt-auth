@@ -154,3 +154,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTStatelessUserAuthentication",
     )
 }
+
+MAILTRAP_TOKEN = get_env_variable("MAILTRAP_TOKEN")
+
+DOMAIN = get_env_variable("DOMAIN")

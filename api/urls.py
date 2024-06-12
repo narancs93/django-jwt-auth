@@ -13,4 +13,6 @@ urlpatterns = [
         users_views.CustomTokenRefreshView.as_view(),
         name="token_refresh",
     ),
+    path("signup/", users_views.CreateUserView.as_view(), name="signup"),
+    path("verify-email/", users_views.VerifyEmailView.as_view(), name="verify-email"),
 ]
