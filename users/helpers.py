@@ -2,14 +2,14 @@ import mailtrap as mt
 from django.conf import settings
 
 
-def send_verify_signup_email(receipient_address, user_id, otp):
+def send_verify_signup_email(recipient_address, user_id, otp):
     url = f"{settings.DOMAIN}/api/v1/verify-email/?uid={user_id}&otp={otp}"
 
     mail = mt.Mail(
         sender=mt.Address(
             email="django-tutorial@demomailtrap.com", name="Mailtrap Test"
         ),
-        to=[mt.Address(email=receipient_address)],
+        to=[mt.Address(email=recipient_address)],
         subject="Active your account!",
         html=f"""
             Hello,<br>
