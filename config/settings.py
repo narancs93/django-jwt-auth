@@ -42,6 +42,7 @@ SECRET_KEY = "django-insecure-3y3ad)6&4dc*=ju)ah$pl*3+jb^akw)m^h9s0-(h3^c^p66mns
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CORS_ALLOWED_ORIGINS = get_env_variable("CORS_ALLOWED_ORIGINS").split(",")
 
 
 # Application definition
@@ -53,6 +54,7 @@ DEFAULT_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
 ]
 
 THIRD_PARTY_APPS = ["rest_framework"]
@@ -64,6 +66,7 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + DEVELOPED_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
