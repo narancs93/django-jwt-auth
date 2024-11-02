@@ -3,7 +3,7 @@ from django.conf import settings
 
 
 def send_verify_signup_email(recipient_address, user_id, otp):
-    url = f"{settings.DOMAIN}/api/v1/verify-email/?uid={user_id}&otp={otp}"
+    url = f"{settings.CORS_ALLOWED_ORIGINS[0]}/verify-email/?uid={user_id}&otp={otp}"
 
     mail = mt.Mail(
         sender=mt.Address(
